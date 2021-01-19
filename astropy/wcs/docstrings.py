@@ -2232,6 +2232,29 @@ However, it does recognize free-format character (NOST 100-2.0,
 Sect. 5.2.1), integer (Sect. 5.2.3), and floating-point values
 (Sect. 5.2.4) for all keywords.
 
+
+.. warning::
+    There are two possible ways of writing to the attributes on this class::
+
+        Wcsprm.crval = [crval]
+        Wcsprm.cdelt = [cdelt]
+        Wcsprm.ctype = [ctype]
+        Wcsprm.cunit = [cunit]
+
+    or::
+
+        Wcsprm.crval[0] = crval
+        Wcsprm.cdelt[0] = cdelt
+        Wcsprm.ctype[0] = ctype
+        Wcsprm.cunit[0] = cunit
+
+    The former should be strongly preferred as it calls additional helpers which
+    ensure that the class is in the correct state. If the latter is used,
+    `Wcsprm.set()` *MUST* be called once the attributes are set (and, depending
+    on the changes, in between setting attributes), otherwise invalid results
+    may be returned when using the object with WCS functions and methods.
+
+
 Parameters
 ----------
 header : An `astropy.io.fits.Header`, string, or `None`.
