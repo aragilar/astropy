@@ -2234,25 +2234,37 @@ Sect. 5.2.1), integer (Sect. 5.2.3), and floating-point values
 
 
 .. warning::
-    There are two possible ways of writing to the attributes on this class::
+    You should always write directly to the attributes to this class, rather
+    than writing to a slice. For example, for a 1D WCS, do this::
 
-        Wcsprm.crval = [crval]
-        Wcsprm.cdelt = [cdelt]
-        Wcsprm.ctype = [ctype]
-        Wcsprm.cunit = [cunit]
+        Wcsprm.crval = [crval1]
+        Wcsprm.cdelt = [cdelt1]
+        Wcsprm.ctype = [ctype1]
+        Wcsprm.cunit = [cunit1]
 
-    or::
+    *NOT*::
 
-        Wcsprm.crval[0] = crval
-        Wcsprm.cdelt[0] = cdelt
-        Wcsprm.ctype[0] = ctype
-        Wcsprm.cunit[0] = cunit
+        Wcsprm.crval[0] = crval1
+        Wcsprm.cdelt[0] = cdelt1
+        Wcsprm.ctype[0] = ctype1
+        Wcsprm.cunit[0] = cunit1
 
-    The former should be strongly preferred as it calls additional helpers which
-    ensure that the class is in the correct state. If the latter is used,
-    `Wcsprm.set()` *MUST* be called once the attributes are set (and, depending
-    on the changes, in between setting attributes), otherwise invalid results
-    may be returned when using the object with WCS functions and methods.
+    Doing the latter will cause the class to be in an invalid state. For
+    WCS with N axes, the following structure should be used::
+
+        crval = [crval1, ..., crvalN]
+        cdelt = [cdelt1, ..., cdeltN]
+        ctype = [ctype1, ..., ctypeN]
+        cunit = [cunit1, ..., cunitN]
+
+        Wcsprm.crval = crval
+        Wcsprm.cdelt = cdelt
+        Wcsprm.ctype = ctype
+        Wcsprm.cunit = cunit
+
+    and for those attributes (such as cd) which are 2-d::
+
+        Wcsprm.cd = [[cd1_1, cd1_2], [cd2_1, cd2_2]]
 
 
 Parameters
