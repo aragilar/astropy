@@ -2234,37 +2234,15 @@ Sect. 5.2.1), integer (Sect. 5.2.3), and floating-point values
 
 
 .. warning::
-    You should always write directly to the attributes to this class, rather
-    than writing to a slice. For example, for a 1D WCS, do this::
 
-        Wcsprm.crval = [crval1]
-        Wcsprm.cdelt = [cdelt1]
-        Wcsprm.ctype = [ctype1]
-        Wcsprm.cunit = [cunit1]
-
-    *NOT*::
-
-        Wcsprm.crval[0] = crval1
-        Wcsprm.cdelt[0] = cdelt1
-        Wcsprm.ctype[0] = ctype1
-        Wcsprm.cunit[0] = cunit1
-
-    Doing the latter will cause the class to be in an invalid state. For
-    WCS with N axes, the following structure should be used::
-
-        crval = [crval1, ..., crvalN]
-        cdelt = [cdelt1, ..., cdeltN]
-        ctype = [ctype1, ..., ctypeN]
-        cunit = [cunit1, ..., cunitN]
-
-        Wcsprm.crval = crval
-        Wcsprm.cdelt = cdelt
-        Wcsprm.ctype = ctype
-        Wcsprm.cunit = cunit
-
-    and for those attributes (such as cd) which are 2-d::
-
-        Wcsprm.cd = [[cd1_1, cd1_2], [cd2_1, cd2_2]]
+    Many of the attributes of this class require additional processing when
+    modifying underlying C structure.  When needed, this additional processing
+    is implemented in attribute setters. Therefore, for mutable attributes, one
+    should always set the attribute rather than a slice of its current value (or
+    its individual elements) since the latter may lead the class instance to be
+    in an invalid state.  For example, attribute `crpix` of a 2D WCS' `Wcsprm`
+    object `wcs` should be set as `wcs.crpix = [crpix1, crpix2]` instead of
+    `wcs.crpix[0] = crpix1; wcs.crpix[1] = crpix2]`.
 
 
 Parameters
